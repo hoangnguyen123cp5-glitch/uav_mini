@@ -1,15 +1,81 @@
-# Flix — hướng dẫn hoàn thiện schematic một PCB
+# UAV Mini — học vẽ mạch điều khiển drone bằng KiCad
 
 **ESP32-S3 SuperMini + 4 motor chổi than + IMU + ToF + optical flow**  
 Cập nhật: 31/10/2026 • Project hiện tại: `Flix_power`
 
-> Đây là hướng dẫn đối chiếu và hoàn thiện schematic, chưa phải thiết kế đã kiểm chứng để đặt sản xuất. Các hình minh họa thể hiện kết nối chức năng, không phải ảnh xuất từ file KiCad. Chưa có file `.kicad_sch` để kiểm tra netlist; kết quả hiện tại dựa trên ảnh và báo cáo ERC người dùng gửi.
+UAV Mini là dự án học thiết kế mạch cho drone nhỏ, tham khảo dự án mã nguồn mở [Flix](https://github.com/okalachev/flix). Mục tiêu là làm một PCB mang bốn kênh điều khiển động cơ và các cổng cảm biến, với bo ESP32-S3 SuperMini cắm lên trên.
 
-## 1. Phương án cuối cùng — giữ một PCB
+**Tài liệu dành cho người mới chưa biết bắt đầu vẽ schematic từ đâu.** Bạn sẽ lần lượt vẽ đầu pin, một kênh motor, nhân thành bốn kênh, nối bo S3 và các cổng cảm biến, rồi kiểm tra kết nối bằng ERC.
 
-Bo S3 SuperMini cắm trực tiếp lên **J7/J8**. Bốn kênh công suất, đầu pin, đo pin, cổng IMU, ToF và optical flow nằm trên cùng PCB. Không tạo PCB `Flix_Control` riêng và không chuyển J7/J8 sang project khác.
+Schematic là sơ đồ các linh kiện nối điện với nhau. PCB là bản bố trí linh kiện và đường đồng để gia công. Tài liệu này hướng dẫn phần schematic; chưa phải hướng dẫn hoàn chỉnh từ đầu đến một drone bay được.
 
-Camera ngoài và máy tính cung cấp vị trí/quỹ đạo qua Wi-Fi. S3 đọc cảm biến và điều khiển tư thế trên drone. ToF đo khoảng cách sàn; optical flow hỗ trợ ước lượng chuyển động ngang. Cần phát triển phần mềm kết hợp cảm biến và điều khiển vị trí, không chỉ cắm đủ phần cứng.
+> Dự án đang phát triển. Các giá trị có chữ TBD và phần nguồn S3 chưa được chốt. Bạn có thể dùng tài liệu để học vẽ, nhưng chưa dùng bản hiện tại để đặt PCB hoặc lắp cấp điện. Repository hiện có tài liệu và hình tham khảo, chưa có bộ file KiCad đã kiểm chứng.
+
+## Bắt đầu từ đâu?
+
+1. Cài KiCad, tạo **New Project** tên `Flix_power` trong một thư mục riêng.
+2. Mở file `.kicad_sch` bằng Schematic Editor.
+3. Đọc phần “Các khái niệm cần biết” bên dưới.
+4. Làm lần lượt bài thực hành A–F; dùng bảng chân và hình ở các mục sau để đối chiếu.
+5. Lưu file sau mỗi khối. Chạy ERC để tìm lỗi kết nối trước khi chuyển sang bố trí PCB.
+
+### Các khái niệm cần biết
+
+| Tên | Hiểu đơn giản |
+|---|---|
+| Symbol | Ký hiệu linh kiện trên schematic |
+| Reference | Mã nhận diện riêng: J là đầu nối, R là điện trở, C là tụ, Q là transistor, D là diode |
+| Value | Giá trị hoặc mã linh kiện, ví dụ 10k, 100nF |
+| Wire | Dây thể hiện kết nối điện |
+| Net label | Tên mạng điện; các dây có cùng local label trên cùng sheet nối điện với nhau dù không kéo dây dài |
+| GND | Điểm tham chiếu chung của mạch |
+| Footprint | Hình chân hàn và kích thước linh kiện trên PCB; chọn sau khi chốt linh kiện thật |
+| ERC | Công cụ tìm một số lỗi kết nối trên schematic |
+| TBD | Chưa chọn xong; đây không phải mã linh kiện để mua |
+
+**Label phải có điểm neo chạm dây.** Chữ đặt gần dây chưa chắc đã nối điện. Số chân của connector cũng không phải số GPIO trên ESP32.
+
+### Bài thực hành A — vẽ đầu pin
+
+- Nhấn **A**, tìm `Conn_01x02_Pin`, đặt đầu nối J1; nhấn **E** đổi Value thành `BATTERY_1S`.
+- Nhấn **W** từ chân 1, kéo một đoạn dây; nhấn **L** đặt nhãn `V_bat`.
+- Nối chân 2 với ký hiệu GND bằng **P → GND**.
+- Thêm tụ phân cực C1 và tụ không phân cực C2 song song giữa V_bat và GND, theo mục 5. Đặt C1 là `BULK_TBD`, C2 là `100nF`.
+- Kiểm tra cực dương C1 nối V_bat. Đây là đầu vào pin, chưa phải mạch sạc.
+
+### Bài thực hành B — vẽ một kênh motor
+
+- Thêm đầu nối 2 chân J2, đổi Value thành `Motor_0`.
+- Nối chân 1 tới nhãn `V_bat`, chân 2 tới `M0_NEG`.
+- Thêm symbol `Q_NMOS_GDS` làm Q1 và hai điện trở R1, R2.
+- Nối theo hình mục 4: PWM_M0 → R1 → Gate; R2 từ Gate xuống GND; Source xuống GND; Drain tới M0_NEG.
+- Thêm diode Schottky D1: cathode tới V_bat, anode tới M0_NEG.
+- Đặt giá trị tạm theo mục 4. Đối chiếu cả tên chân G/D/S và số chân trước khi nối.
+
+### Bài thực hành C — tạo đủ bốn kênh
+
+Nhân bản khối motor ba lần. Dùng bảng mục 4 để sửa Reference và tên nhãn từng kênh. Cả bốn kênh dùng chung V_bat và GND; mỗi kênh phải có PWM và Mn_NEG riêng. Khi KiCad tự đánh số khác bảng, có thể sửa Reference để thống nhất; tuyệt đối không để hai linh kiện trùng Reference.
+
+### Bài thực hành D — socket S3 và đo pin
+
+- Thêm hai socket 9 chân làm J7/J8. Đây là chỗ cắm bo S3 lên PCB.
+- Kéo dây ngắn và đặt nhãn từng chân theo bảng mục 3.
+- Vẽ R9, R10 và C3 theo mục 5; nối điểm giữa tới `VBAT_SENSE`.
+- Phân biệt rõ J8.1 là `S3_5V`, J8.3 là `S3_3V3`. Phần tạo nguồn cấp S3 vẫn chờ hoàn thiện ở mục 7.
+
+### Bài thực hành E — cổng cảm biến
+
+Thêm đầu nối 4 chân J6 cho ToF, đầu nối 6 chân J9 cho IMU và J10 cho optical flow. Gắn nhãn theo bảng mục 6. Các đầu nối này chỉ đại diện cổng trên PCB; khi dùng module thật phải đối chiếu thứ tự chân module trước khi làm dây.
+
+### Bài thực hành F — tự kiểm tra
+
+Lưu sơ đồ, chạy ERC theo mục 8. Nhấp đúp từng cảnh báo để tìm vị trí, sửa kết nối rồi chạy lại. Đối chiếu bảng chân bằng mắt ngay cả khi ERC hết lỗi. Hoàn thành bài thực hành nghĩa là đã dựng được các khối schematic; phần nguồn, chọn linh kiện và layout vẫn cần các bước tiếp theo.
+
+## 1. Kiến trúc dự án — một PCB
+
+Bo S3 SuperMini cắm trực tiếp lên **J7/J8**. Bốn kênh công suất, đầu pin, đo pin, cổng IMU, ToF và optical flow nằm trên cùng PCB. Thiết kế dùng một PCB mang bo S3 và các đầu nối.
+
+Mục tiêu phần mềm là dùng camera ngoài và máy tính để ước lượng vị trí, gửi dữ liệu hoặc lệnh qua Wi-Fi. S3 đọc cảm biến và điều khiển tư thế trên drone. ToF đo khoảng cách sàn; optical flow hỗ trợ ước lượng chuyển động ngang. Cần phát triển phần mềm kết hợp cảm biến và điều khiển vị trí, không chỉ cắm đủ phần cứng.
 
 ![Kiến trúc một PCB](images/01-architecture.png)
 
@@ -25,22 +91,16 @@ Camera ngoài và máy tính cung cấp vị trí/quỹ đạo qua Wi-Fi. S3 đ�
 | J9 | IMU_SPI, 6 chân | Conn_01x06_Pin |
 | J10 | FLOW_SPI, 6 chân | Conn_01x06_Pin |
 
-J6 hiện là ToF, **không phải TO_MCU cũ**. Không xóa J6 hiện tại. Các hướng dẫn cũ về J9 ToF hoặc J11 IMU không còn áp dụng.
+## 2. Phạm vi hiện tại
 
-## 2. Hiện trạng và việc làm ngay
-
-| Phần | Trạng thái |
+| Đã có trong hướng dẫn | Còn phải hoàn thiện |
 |---|---|
-| Đầu pin, bốn kênh motor, chia áp đo pin | Đã vẽ; đã xem ảnh |
-| Socket S3 và ba cổng cảm biến | Đã vẽ; đã hướng dẫn sửa nhãn |
-| FLOW_CS, SDA/SCL, VBAT_SENSE | Đã sửa theo phản hồi/ảnh; cần kiểm tra lại bằng file |
-| J8.1 từng bị gán nhầm S3_3V3 | Người dùng báo đã sửa về S3_5V; chưa có ERC mới |
-| Nguồn cấp S3 | Chưa hoàn thiện |
-| Mã MOSFET, diode, tụ bulk và module cảm biến | Chưa chốt |
-| Kiểm tra ERC đầy đủ | Chưa hoàn tất; báo cáo cũ có 17 cảnh báo |
-| Footprint, layout, DRC | Chưa thực hiện |
+| Cách vẽ đầu pin và bốn kênh motor | Chọn mã MOSFET, diode và tụ bulk |
+| Bảng kết nối S3 và cổng cảm biến | Xác minh đúng phiên bản bo và module thực tế |
+| Mạch chia áp đo pin | Nguồn S3, ngân sách dòng và xử lý nguồn USB |
+| Quy trình kiểm tra ERC | File KiCad kiểm chứng, footprint, layout và DRC |
 
-**Bước ngay tiếp theo:** lưu schematic, chạy ERC mới có cả Errors và Warnings; kiểm tra lại nguồn J8.1/J8.3. Sau đó chốt module nguồn và cảm biến trước khi điền linh kiện phụ hoặc footprint.
+Các kết nối trong tài liệu là phương án thiết kế đang phát triển. Chưa có kết quả thử phần cứng hoặc thử bay của PCB này.
 
 ## 3. Socket S3 — bảng chân chuẩn của thiết kế
 
@@ -60,7 +120,7 @@ Nhìn mặt linh kiện bo S3, USB hướng lên. Chân socket 1–9 là số t�
 | 8 | GPIO6 | PWM_M2 | GPIO9 | I2C_SCL |
 | 9 | GPIO7 | PWM_M3 | GPIO8 | I2C_SDA |
 
-### Cách sửa trong KiCad
+### Cách đặt dây và nhãn trong KiCad
 
 1. Rê chuột lên nhãn, nhấn **E**, nhập đúng tên trong bảng.
 2. Nếu chưa có dây: rê đúng đầu chân, nhấn **W**, kéo đoạn dây rồi Esc.
@@ -73,7 +133,7 @@ Nhìn mặt linh kiện bo S3, USB hướng lên. Chân socket 1–9 là số t�
 
 ![Kết nối một kênh motor](images/03-motor.png)
 
-Hình dùng khối Q1 để chỉ G/D/S rõ ràng; trong KiCad dùng symbol MOSFET. Symbol hiện thấy trong ảnh có **G=1, D=2, S=3**, tương ứng kiểu `Q_NMOS_GDS`. Khi chọn linh kiện thật phải đối chiếu lại datasheet, không mặc định mọi MOSFET đều có số chân này.
+Hình dùng khối Q1 để chỉ G/D/S rõ ràng; trong KiCad dùng symbol MOSFET. Symbol minh họa có **G=1, D=2, S=3**, tương ứng kiểu `Q_NMOS_GDS`. Khi chọn linh kiện thật phải đối chiếu lại datasheet, không mặc định mọi MOSFET đều có số chân này.
 
 ### Kết nối của từng kênh
 
@@ -164,7 +224,7 @@ LiPo 1S / V_bat ──┬── Motor 0…3
                       S3_3V3 / J8.3 → cảm biến
 ```
 
-Không dùng TPS63001 trong hướng hiện tại; người dùng ưu tiên module dễ mua/lắp. Không chọn footprint nguồn khi chưa xác định đúng module.
+Dự án đang ưu tiên phương án module nguồn để thuận tiện lắp thử. Không chọn footprint nguồn khi chưa xác định đúng module.
 
 ### Thông tin phải chốt
 
@@ -178,13 +238,13 @@ Chưa có mã bo/module và sơ đồ nguồn xác thực nên chưa điền ch�
 
 ## 8. Khắc phục và chạy lại ERC
 
-Báo cáo đã nhận ngày 31/10 có **17 warnings**; đầu báo cáo ghi chỉ gồm Warnings. Số Errors 0 trong bản xuất đó không đủ xác nhận toàn bộ ERC sạch.
+ERC giúp tìm các điểm nối còn thiếu hoặc cách khai báo chân chưa phù hợp. Những cảnh báo thường gặp khi làm bài này:
 
-| Nhóm | Số lượng cũ | Cách xử lý |
-|---|---:|---|
-| Unconnected wire endpoint | 12 | Bấm từng lỗi để định vị, kiểm tra đầu chân và điểm neo nhãn; vẽ lại dây nếu cần |
-| Local and global labels have same name | 1 | Thống nhất local label GND về symbol power:GND, giữ đúng kết nối |
-| Label connected to only one pin | 4 | TX/RX/GPIO3 dự phòng; S3_5V đang thiếu phần nguồn |
+| Cảnh báo | Cách xử lý |
+|---|---|
+| Unconnected wire endpoint | Kiểm tra đầu dây và điểm neo nhãn; vẽ lại đoạn dây nếu chưa chạm |
+| Local and global labels have same name | Với GND, thống nhất dùng symbol power:GND |
+| Label connected to only one pin | Kiểm tra xem thiếu kết nối hay chân được chủ ý để dự phòng; nguồn S3 chưa hoàn thiện cũng cần kiểm tra |
 
 ### Quy trình
 
@@ -193,10 +253,8 @@ Báo cáo đã nhận ngày 31/10 có **17 warnings**; đầu báo cáo ghi ch�
 3. Với đầu dây hở: phóng to, bắt đầu **W** đúng đầu chân; đặt điểm neo nhãn lên dây, không chỉ đặt chữ gần dây.
 4. Với chân thực sự không dùng: chỉ đặt No Connect trực tiếp chân sau khi quyết định không dùng và gỡ dây/nhãn thừa. Không làm vậy với S3_5V đang chờ nguồn.
 5. Chỉ thêm PWR_FLAG tại mạng thực sự được cấp nguồn khi ERC cần khai báo; cờ này không tạo ra nguồn điện.
-6. Có sheet `/Flix_Control/` trong báo cáo cũ: xem nội dung trước khi dọn. Sheet con không tự tạo PCB thứ hai.
+6. Nếu dùng sheet con, kiểm tra kết nối giữa các sheet. Sheet con không tự tạo PCB thứ hai.
 7. Bật lại kiểm tra footprint filter đang bị bỏ qua khi chốt footprint. Ghi lý do cho mọi cảnh báo cố ý giữ lại.
-
-Đầu dây cảnh báo cũ (mils): (1400,4400/4500), (4000,4400/4500), (6750,4450/4550), (7150,1200/1300/1400/1500), (9350,4450/4550). Tọa độ có thể đổi khi di chuyển linh kiện.
 
 **ERC không phát hiện mọi lỗi:** chân connector passive có thể không báo thiếu nguồn; nhãn sai nhưng có kết nối vẫn có thể qua kiểm tra; chọn sai MOSFET hoặc điện áp module cũng không được đảm bảo bởi ERC.
 
@@ -228,7 +286,7 @@ Báo cáo đã nhận ngày 31/10 có **17 warnings**; đầu báo cáo ghi ch�
 
 Sau đó mới layout, DRC, kiểm tra 3D, xuất Gerber/BOM. Cần tính khối lượng bo + socket + module + dây so với sức nâng motor 8520. Thử nguồn và từng motor khi tháo cánh trước khi thử điều khiển bay.
 
-## 10. Phím nhanh và cách duyệt tiếp
+## 10. Phím nhanh
 
 | Phím | Thao tác |
 |---|---|
@@ -242,13 +300,13 @@ Sau đó mới layout, DRC, kiểm tra 3D, xuất Gerber/BOM. Cần tính khối
 | Esc | Thoát thao tác |
 | Ctrl+S | Lưu |
 
-Để duyệt tiếp, cung cấp file `.kicad_sch` chính cùng các sheet con được tham chiếu, báo cáo ERC mới và link/ảnh module nguồn/cảm biến định mua. Hình chụp giúp xem bố cục nhưng không xác nhận netlist hoặc điểm nối nhỏ.
+Khi cần người khác kiểm tra, gửi file `.kicad_sch` cùng các sheet con, báo cáo ERC và mã module thực tế. Ảnh chụp giúp xem bố cục nhưng không xác nhận đầy đủ các kết nối.
 
 ## Nguồn và hình minh họa
 
-### Ảnh tham khảo người dùng đã gửi
+### Ảnh schematic và bo S3 tham khảo
 
-Ảnh dưới là **ảnh chụp schematic thật trong KiCad**, trước lần sửa nhãn nguồn cuối. Nó vẫn thể hiện lỗi J8.1 mang S3_3V3 và các dấu ERC cũ; **không sao chép lỗi này**. Bảng chân ở mục 3 là hướng dẫn hiện hành: J8.1 = S3_5V, J8.3 = S3_3V3. Người dùng đã báo sửa, nhưng chưa cung cấp file/ảnh xác nhận cuối.
+Ảnh dưới là **ảnh chụp schematic thật trong KiCad**, trước lần sửa nhãn nguồn cuối. Nó vẫn thể hiện lỗi J8.1 mang S3_3V3 và các dấu ERC cũ; **không sao chép lỗi này**. Bảng chân ở mục 3 là hướng dẫn hiện hành: J8.1 = S3_5V, J8.3 = S3_3V3. Ảnh này chỉ để nhận biết bố cục các khối, không phải sơ đồ hoàn thiện để sao chép.
 
 ![Ảnh schematic tham khảo trước lần sửa cuối](images/schematic-reference-before-final-fixes.png)
 
@@ -262,3 +320,13 @@ Sau đó mới layout, DRC, kiểm tra 3D, xuất Gerber/BOM. Cần tính khối
 - [Bitcraze — driver PMW3901](https://github.com/bitcraze/Bitcraze_PMW3901)
 
 Bốn hình PNG trong thư mục `images/` được dựng riêng cho hướng dẫn này. Bảng socket S3 dựa trên ảnh pinout người dùng cung cấp; không phải tài liệu chứng nhận của nhà sản xuất bo.
+
+## Video học thêm
+
+- [Electrical Rules Check trên KiCad — einstem](https://www.youtube.com/watch?v=UgQMZtF_Wkw&t=27s): phần chạy ERC bắt đầu ở 0:27.
+- [ERC và DRC trên KiCad 9 cho người mới](https://www.youtube.com/watch?v=OZhVRyuPJuA): xem phần ERC khi đang vẽ schematic, phần DRC khi làm PCB.
+- [KiCad — Getting Started](https://docs.kicad.org/9.0/en/getting_started_in_kicad/getting_started_in_kicad.html): tài liệu chính thức về quy trình thiết kế.
+
+## Đóng góp
+
+Có thể mở Issue trong repository để hỏi về bước vẽ hoặc báo lỗi tài liệu. Khi báo lỗi, ghi phiên bản KiCad, bước đang làm và kèm ảnh hoặc file schematic liên quan. Không coi việc hoàn thành bài vẽ hoặc ERC hết lỗi là xác nhận drone đã sẵn sàng bay.
