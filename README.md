@@ -11,6 +11,8 @@ Schematic là sơ đồ các linh kiện nối điện với nhau. PCB là bản
 
 > Dự án đang phát triển. Các giá trị có chữ TBD và phần nguồn S3 chưa được chốt. Bạn có thể dùng tài liệu để học vẽ, nhưng chưa dùng bản hiện tại để đặt PCB hoặc lắp cấp điện. Repository hiện có tài liệu và hình tham khảo, chưa có bộ file KiCad đã kiểm chứng.
 
+Các ảnh chụp KiCad ở bài thực hành A–E là ảnh thật ghi lại từng bước vẽ của dự án. Chú thích ngay dưới ảnh chỉ rõ phần nào còn là bước trung gian hoặc thuộc phương án cũ. Bốn hình sơ đồ chức năng ở các mục tham khảo được vẽ riêng để giải thích kết nối.
+
 ## Bắt đầu từ đâu?
 
 1. Cài KiCad, tạo **New Project** tên `Flix_power` trong một thư mục riêng.
@@ -43,6 +45,12 @@ Schematic là sơ đồ các linh kiện nối điện với nhau. PCB là bản
 - Thêm tụ phân cực C1 và tụ không phân cực C2 song song giữa V_bat và GND, theo mục 5. Đặt C1 là `BULK_TBD`, C2 là `100nF`.
 - Kiểm tra cực dương C1 nối V_bat. Đây là đầu vào pin, chưa phải mạch sạc.
 
+**Ảnh chụp thực tế sau khi vẽ khối đầu pin:**
+
+![Khối J1, C1 và C2 trong KiCad](images/step-a-battery.png)
+
+Hai ký hiệu GND thuộc cùng mạng điện. Chấm xanh tại chỗ rẽ thể hiện điểm nối dây. C1 vẫn chờ chọn giá trị thực tế.
+
 ### Bài thực hành B — vẽ một kênh motor
 
 - Thêm đầu nối 2 chân J2, đổi Value thành `Motor_0`.
@@ -52,9 +60,51 @@ Schematic là sơ đồ các linh kiện nối điện với nhau. PCB là bản
 - Thêm diode Schottky D1: cathode tới V_bat, anode tới M0_NEG.
 - Đặt giá trị tạm theo mục 4. Đối chiếu cả tên chân G/D/S và số chân trước khi nối.
 
+#### B1. Đặt đầu nối motor
+
+Nhấn **A** để thêm đầu nối 2 chân, **E** sửa Value thành Motor_0. Dùng **W** vẽ dây và **L** đặt V_bat/M0_NEG. Đặt Reference là J2; chữ Motor_0 là Value, không thay cho Reference.
+
+![Đầu nối motor và hai nhãn](images/step-b1-motor-connector.png)
+
+#### B2. Thêm MOSFET
+
+Nhấn **A**, tìm Q_NMOS_GDS. Đặt Drain lên trên, Source xuống dưới như ảnh; rê chuột lên symbol và nhấn **R** nếu cần xoay. Nối Drain tới M0_NEG, Source tới GND. Chân Gate bên trái sẽ nối ở bước B3.
+
+![Đầu nối motor và MOSFET](images/step-b2-mosfet.png)
+
+Ảnh này là bước trung gian: Gate còn hở. Vẽ dây GND gọn, tránh đoạn dây gấp ngược như trong ảnh. Không cần kéo dây dài từ motor tới Drain: hai nhãn M0_NEG cùng sheet tạo kết nối.
+
+#### B3. Thêm điện trở điều khiển Gate
+
+Nhấn **A**, tìm symbol điện trở R và đặt R1 nằm ngang; dùng **R** để xoay. Nhấn **E** đặt Value 100R. Thêm R2 đứng dọc, Value 10k, nối từ nút giữa R1 và Gate xuống GND. Đầu còn lại của R1 đặt nhãn PWM_M0.
+
+![R1 nối tiếp Gate và R2 kéo xuống GND](images/step-b3-gate-resistors.png)
+
+Đối chiếu chấm nối xanh ở nhánh R2: nhánh này phải nối vào phía Gate của R1.
+
+#### B4. Thêm diode hồi dòng
+
+Nhấn **A**, tìm symbol D_Schottky. Xoay để cathode (đầu có vạch gấp của ký hiệu Schottky) ở phía V_bat; anode nối M0_NEG. Đặt Reference D1 và Value SCHOTTKY_TBD trong giai đoạn chưa chọn mã thật.
+
+![Diode nối giữa V_bat và M0_NEG](images/step-b4-flyback-diode.png)
+
+Ảnh cũ ghi CHOTTKY_TKD; dùng tên SCHOTTKY_TBD trong bài vẽ. Đây là giá trị tạm, không phải mã linh kiện.
+
+#### B5. Đối chiếu cả kênh
+
+![Đầu pin và một kênh motor đã ghép đủ các phần](images/step-b5-complete-motor.png)
+
+Theo dõi ba điểm mang nhãn M0_NEG: đầu motor, diode và Drain. Cả ba phải viết cùng một tên. Gate phải có cả điện trở nối tiếp và điện trở kéo xuống.
+
 ### Bài thực hành C — tạo đủ bốn kênh
 
 Nhân bản khối motor ba lần. Dùng bảng mục 4 để sửa Reference và tên nhãn từng kênh. Cả bốn kênh dùng chung V_bat và GND; mỗi kênh phải có PWM và Mn_NEG riêng. Khi KiCad tự đánh số khác bảng, có thể sửa Reference để thống nhất; tuyệt đối không để hai linh kiện trùng Reference.
+
+**Kết quả bố trí bốn kênh trong KiCad:**
+
+![Bốn kênh điều khiển motor](images/step-c-four-motors.png)
+
+Chọn cả khối một kênh rồi nhân bản bằng **Ctrl+D**. Sửa nhãn kênh 1, 2, 3 ngay sau mỗi lần nhân; bảng mục 4 liệt kê tên cần dùng. Giữ V_bat/GND chung cho tất cả kênh.
 
 ### Bài thực hành D — socket S3 và đo pin
 
@@ -63,9 +113,23 @@ Nhân bản khối motor ba lần. Dùng bảng mục 4 để sửa Reference v�
 - Vẽ R9, R10 và C3 theo mục 5; nối điểm giữa tới `VBAT_SENSE`.
 - Phân biệt rõ J8.1 là `S3_5V`, J8.3 là `S3_3V3`. Phần tạo nguồn cấp S3 vẫn chờ hoàn thiện ở mục 7.
 
+**Ảnh quá trình vẽ mạch đo pin — chỉ làm theo khối bên phải:**
+
+![Mạch chia áp R9 R10 và tụ C3 ở bên phải](images/step-d-voltage-divider.png)
+
+Nhấn **A** đặt hai điện trở, dùng **R** xoay đứng, **E** đặt mỗi con 10k. Nối R9 từ V_bat tới nút giữa, R10 từ nút giữa xuống GND. Thêm C3 100nF từ nút giữa xuống GND, rồi đặt nhãn VBAT_SENSE tại nút giữa.
+
+**Đầu J6 TO_MCU bên trái thuộc phương án cũ, không vẽ lại.** Thiết kế hiện tại dùng J7/J8 cắm trực tiếp S3; J6 được dùng làm cổng ToF. Dùng bảng chân mục 3 để vẽ hai socket S3.
+
 ### Bài thực hành E — cổng cảm biến
 
 Thêm đầu nối 4 chân J6 cho ToF, đầu nối 6 chân J9 cho IMU và J10 cho optical flow. Gắn nhãn theo bảng mục 6. Các đầu nối này chỉ đại diện cổng trên PCB; khi dùng module thật phải đối chiếu thứ tự chân module trước khi làm dây.
+
+Ảnh tổng thể dưới đây cho thấy các đầu nối nằm ở phía trên của sơ đồ:
+
+![Vị trí các socket S3 và cổng cảm biến trên schematic](images/schematic-reference-before-final-fixes.png)
+
+Đây là ảnh trong quá trình vẽ, **còn lỗi nhãn J8.1**: khi thực hành phải đặt J8.1 = S3_5V, J8.3 = S3_3V3. Dùng bảng mục 3 và mục 6 để đối chiếu, không sao chép nguyên mọi nhãn trong ảnh. J9.6 phải là IMU_CS, J10.6 phải là FLOW_CS.
 
 ### Bài thực hành F — tự kiểm tra
 
