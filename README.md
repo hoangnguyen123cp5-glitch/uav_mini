@@ -37,6 +37,132 @@ Các ảnh chụp KiCad ở bài thực hành A–E là ảnh thật ghi lại t
 
 **Label phải có điểm neo chạm dây.** Chữ đặt gần dây chưa chắc đã nối điện. Số chân của connector cũng không phải số GPIO trên ESP32.
 
+## Thao tác KiCad từng lệnh — đọc trước khi vẽ
+
+Hướng dẫn dùng Schematic Editor trên Windows, với phím tắt mặc định. Khi bấm phím, đưa con trỏ vào vùng vẽ; nếu đang nhập chữ trong hộp thoại, phím sẽ nhập chữ thay vì chạy lệnh. Nếu đã đổi phím tắt, kiểm tra trong **Preferences → Preferences → Hotkeys**.
+
+### 1. Tạo project và mở trang vẽ
+
+1. Mở KiCad Project Manager.
+2. Chọn **File → New Project**, chọn thư mục và nhập tên Flix_power.
+3. Giữ tùy chọn tạo thư mục riêng cho project nếu hộp thoại có tùy chọn này, rồi lưu.
+4. Trong danh sách file của project, mở **Flix_power.kicad_sch**. Đây là trang vẽ sơ đồ nguyên lý.
+5. Nếu lần đầu KiCad hỏi thiết lập thư viện symbol, chọn thư viện mặc định được cài cùng KiCad.
+6. Dùng lưới **50 mil** để đặt chân và dây. Cuộn bánh xe chuột để phóng to khu vực đang vẽ.
+
+### 2. A — thêm linh kiện
+
+Ví dụ thêm đầu pin J1:
+
+1. Đưa chuột tới khoảng trống, nhấn **A**.
+2. Trong cửa sổ Choose Symbol, gõ **Conn_01x02_Pin** vào ô tìm kiếm.
+3. Chọn đúng kết quả, nhìn hình xem có hai chân đánh số 1 và 2, rồi bấm **OK**.
+4. Symbol đi theo con trỏ. Di chuyển tới nơi muốn đặt, bấm chuột trái một lần.
+5. Nhấn **Esc** để thoát chế độ đặt; nếu còn công cụ hoạt động, nhấn Esc thêm lần nữa.
+
+Dùng cùng thao tác này cho từng linh kiện:
+
+| Cần vẽ | Từ khóa tìm bằng A | Reference theo bài | Value nhập bằng E |
+|---|---|---|---|
+| Đầu pin | Conn_01x02_Pin | J1 | BATTERY_1S |
+| Đầu motor | Conn_01x02_Pin | J2–J5 | Motor_0 đến Motor_3 |
+| Tụ phân cực | Device:C_Polarized | C1 | BULK_TBD |
+| Tụ không phân cực | Device:C | C2, C3 | 100nF |
+| Điện trở | Device:R | R1–R10 | Theo bảng từng khối |
+| MOSFET N | Q_NMOS_GDS | Q1–Q4 | NMOS_TBD |
+| Diode Schottky | Device:D_Schottky | D1–D4 | SCHOTTKY_TBD |
+| Socket S3 | Conn_01x09_Socket | J7, J8 | S3_LEFT, S3_RIGHT |
+| Đầu ToF | Conn_01x04_Pin | J6 | TOF_I2C |
+| Đầu IMU/flow | Conn_01x06_Pin | J9, J10 | IMU_SPI, FLOW_SPI |
+
+Nếu không tìm thấy, bỏ phần tên thư viện trước dấu hai chấm và tìm lại. Không chọn đại linh kiện có chân khác. Pin/Socket trong tên symbol biểu diễn loại đầu nối; footprint thật và kích thước hàng chân vẫn cần chọn riêng.
+
+### 3. E — sửa tên và giá trị
+
+1. Nhấn Esc để thoát công cụ trước đó.
+2. Rê chuột lên **thân symbol** J1, nhấn **E**. Nếu xuất hiện danh sách nhiều đối tượng, chọn symbol cần sửa.
+3. Trong Symbol Properties, tìm hàng **Reference**, nhập J1.
+4. Tìm hàng **Value**, nhập BATTERY_1S; bấm **OK**.
+5. Kiểm tra trên trang vẽ có cả J1 và BATTERY_1S.
+
+Với điện trở, nhập Value là 100R hoặc 10k theo bài. Reference phải duy nhất: R1 và R2 là hai linh kiện khác nhau. Chưa chốt linh kiện thật thì để trống Footprint; không chọn footprint tùy ý chỉ để đi tiếp.
+
+### 4. R — xoay; M — di chuyển
+
+- **Xoay:** rê chuột lên thân điện trở → nhấn **R** một lần để xoay 90°; nhấn thêm nếu cần. Khi symbol đang đi theo chuột lúc đặt, cũng dùng R rồi bấm trái để đặt.
+- **Di chuyển:** rê chuột lên symbol → nhấn **M** → đưa đến vị trí mới → bấm trái.
+- Sau khi di chuyển một linh kiện đã nối dây, kiểm tra lại các đầu dây. Có thể dùng **G** để kéo linh kiện cùng dây, nhưng vẫn cần xem lại kết nối.
+- Nhấn **Esc** để hủy thao tác chưa đặt. Nhấn **Ctrl+Z** để hoàn tác thay đổi vừa thực hiện.
+
+### 5. W — nối dây điện
+
+Ví dụ nối chân 1 của J1 đến cực dương C1:
+
+1. Đặt C1 ở bên phải J1, cực + hướng lên trên.
+2. Rê chuột đúng **đầu ngoài chân 1** của J1, không đặt lên số 1 hay chữ J1.
+3. Nhấn **W**; di chuyển chuột để kéo dây.
+4. Bấm trái tại vị trí muốn tạo góc rẽ, rồi tiếp tục tới đầu chân + của C1.
+5. Bấm trái đúng đầu chân C1 để hoàn thành kết nối. Nhấn Esc để thoát công cụ.
+6. Nếu muốn kết thúc một đoạn dây ở khoảng trống để đặt label, **nhấp đúp** tại điểm cuối rồi Esc.
+
+Dây là đối tượng Wire, không dùng đường đồ họa để thay dây điện. Đầu dây phải bắt đúng chân trên lưới.
+
+**Tạo nhánh:** rê chuột lên dây có sẵn → W → kéo tới chân linh kiện khác → bấm trái. Tại điểm nhánh nối điện sẽ có junction; không coi hai đường nhìn như chạm nhau là bằng chứng đủ nếu chưa kiểm tra điểm nối.
+
+### 6. L — đặt tên mạng điện
+
+Ví dụ đặt nhãn V_bat lên dây từ J1.1:
+
+1. Nhấn Esc để thoát lệnh vẽ dây.
+2. Rê chuột gần đoạn dây, nhấn **L**.
+3. Nhập đúng **V_bat** trong hộp thoại Label Properties → OK.
+4. Nhãn đi theo chuột: đưa **điểm neo của nhãn** chạm đoạn dây, bấm trái để đặt.
+5. Nhấn Esc. Muốn đổi tên, rê lên nhãn và nhấn E.
+
+Làm tương tự với M0_NEG và PWM_M0. Không dùng **T (text)** để tạo tên mạng: chữ ghi chú không tạo kết nối điện. Các local label cùng tên trên cùng sheet thuộc cùng mạng; không tự suy ra kết nối qua các sheet khác nhau.
+
+### 7. P — đặt GND
+
+1. Rê chuột vào khoảng trống dưới linh kiện, nhấn **P**.
+2. Tìm **GND**, chọn symbol power:GND → OK.
+3. Đặt symbol dưới chân cần nối, bấm trái rồi Esc.
+4. Rê đúng đầu chân linh kiện → W → kéo tới điểm nối phía trên symbol GND → bấm trái.
+5. Tất cả symbol GND dùng chung mạng điện; không cần vẽ dây dài nối mọi ký hiệu GND với nhau.
+
+Không đổi tên nguồn 5V thành 3V3 để hết cảnh báo. Label và ký hiệu nguồn không tạo ra điện áp vật lý.
+
+### 8. Ctrl+D — nhân bản một khối
+
+1. Nhấn Esc để không còn công cụ đang chạy.
+2. Kéo một khung chọn **từ trái sang phải**, bao trọn linh kiện, dây và nhãn của một kênh motor.
+3. Kiểm tra các đối tượng cần sao chép đều được chọn; không lấy cả khối pin nếu chỉ muốn nhân motor.
+4. Nhấn **Ctrl+D**, đưa bản sao sang bên phải, bấm trái rồi Esc.
+5. Sửa Reference của bản sao theo bảng mục 4 nếu cần; tránh trùng với bản gốc.
+6. Rê lên từng nhãn → E: PWM_M0 thành PWM_M1, và **cả ba** M0_NEG thành M1_NEG.
+7. Lặp lại cho kênh 2 và 3; giữ nguyên V_bat và GND.
+
+Nhân bản không tự hiểu đâu là tín hiệu dùng chung, đâu là tín hiệu riêng. Nếu quên đổi M0_NEG, hai kênh sẽ bị nối chung qua tên mạng.
+
+### 9. Delete, Ctrl+Z, Esc — sửa thao tác nhầm
+
+- Rê lên đúng đối tượng cần bỏ → **Delete**. Nếu chọn nhầm, **Ctrl+Z** ngay.
+- **Esc** hủy công cụ/selection hiện tại, không hoàn tác những gì đã đặt xong.
+- Khi khó chọn dây vì gần chữ hoặc chân, phóng to và chọn đúng đối tượng trong danh sách KiCad hiện ra.
+- Nếu đầu dây chưa bắt đúng chân, xóa đoạn sai rồi vẽ lại bằng W từ đầu chân. Không kéo chữ nhãn tới gần để che lỗi.
+
+### 10. Lưu và chạy ERC
+
+1. Nhấn **Ctrl+S**.
+2. Chọn **Inspect → Electrical Rules Checker**.
+3. Bấm **Run ERC**; hiển thị cả Errors và Warnings.
+4. Nhấp đúp một dòng cảnh báo để KiCad đưa tới vị trí liên quan.
+5. Sửa lỗi trên trang vẽ, lưu, chạy ERC lại. Đối chiếu xem đúng cảnh báo đó đã biến mất chưa.
+6. Nếu Reference còn dạng R?/J? hoặc bị trùng, dùng **Tools → Annotate Schematic**; đọc lựa chọn trước khi áp dụng, giữ các Reference đã gán đúng. Khi số đổi, đối chiếu lại bảng hướng dẫn theo chức năng.
+
+**Chỉ với chân thực sự không dùng:** bỏ dây/label thừa, rê đúng đầu chân rồi nhấn **Q** để đặt dấu No Connect. Không đánh Q lên chân cấp nguồn đang thiếu mạch nguồn. PWR_FLAG chỉ khai báo nguồn cho ERC, không thay thế mạch nguồn.
+
+Thao tác tham khảo: [KiCad Schematic Editor 10.0](https://docs.kicad.org/10.0/en/eeschema/eeschema.html).
+
 ### Bài thực hành A — vẽ đầu pin
 
 - Nhấn **A**, tìm `Conn_01x02_Pin`, đặt đầu nối J1; nhấn **E** đổi Value thành `BATTERY_1S`.
@@ -44,6 +170,15 @@ Các ảnh chụp KiCad ở bài thực hành A–E là ảnh thật ghi lại t
 - Nối chân 2 với ký hiệu GND bằng **P → GND**.
 - Thêm tụ phân cực C1 và tụ không phân cực C2 song song giữa V_bat và GND, theo mục 5. Đặt C1 là `BULK_TBD`, C2 là `100nF`.
 - Kiểm tra cực dương C1 nối V_bat. Đây là đầu vào pin, chưa phải mạch sạc.
+
+**Thứ tự nối C1/C2 bằng W:**
+
+1. A → Device:C_Polarized → đặt C1 → E → Value BULK_TBD. Xoay R nếu cần để cực + ở trên.
+2. A → Device:C → đặt C2 bên phải C1 → E → Value 100nF.
+3. W từ J1.1 tới chân + C1; W từ nút này sang chân trên C2.
+4. W nối chân dưới C1 với chân dưới C2; đặt GND tại mạng này bằng P rồi nối W.
+5. P → GND → đặt dưới J1.2; W nối J1.2 tới GND.
+6. L → V_bat → đặt điểm neo lên dây J1.1. Ctrl+S.
 
 **Ảnh chụp thực tế sau khi vẽ khối đầu pin:**
 
@@ -113,6 +248,16 @@ Chọn cả khối một kênh rồi nhân bản bằng **Ctrl+D**. Sửa nhãn 
 - Vẽ R9, R10 và C3 theo mục 5; nối điểm giữa tới `VBAT_SENSE`.
 - Phân biệt rõ J8.1 là `S3_5V`, J8.3 là `S3_3V3`. Phần tạo nguồn cấp S3 vẫn chờ hoàn thiện ở mục 7.
 
+**Thao tác vẽ hai socket:**
+
+1. A → Conn_01x09_Socket → đặt J7 → E sửa Value S3_LEFT.
+2. A → Conn_01x09_Socket → đặt J8 → E sửa Value S3_RIGHT.
+3. Nếu chiều chân không giống ảnh, vẫn nhận diện theo số chân; dùng R để xoay nếu cần. Không lấy vị trí trên/dưới thay cho số chân.
+4. Tại mỗi đầu chân: W → kéo đoạn dây ngắn → nhấp đúp kết thúc → Esc.
+5. L → nhập tên nhãn trong bảng mục 3 → đặt điểm neo lên đoạn dây đó → Esc.
+6. Riêng chân J8.2, đặt GND bằng P và nối W.
+7. Kiểm tra lần lượt chân 1 đến 9 của cả hai socket trước khi lưu.
+
 **Ảnh quá trình vẽ mạch đo pin — chỉ làm theo khối bên phải:**
 
 ![Mạch chia áp R9 R10 và tụ C3 ở bên phải](images/step-d-voltage-divider.png)
@@ -124,6 +269,17 @@ Nhấn **A** đặt hai điện trở, dùng **R** xoay đứng, **E** đặt m�
 ### Bài thực hành E — cổng cảm biến
 
 Thêm đầu nối 4 chân J6 cho ToF, đầu nối 6 chân J9 cho IMU và J10 cho optical flow. Gắn nhãn theo bảng mục 6. Các đầu nối này chỉ đại diện cổng trên PCB; khi dùng module thật phải đối chiếu thứ tự chân module trước khi làm dây.
+
+**Thao tác cho từng cổng:**
+
+1. A → Conn_01x04_Pin → đặt → E sửa Reference J6 và Value TOF_I2C.
+2. W vẽ đoạn dây ngắn từ mỗi chân; kết thúc đoạn bằng nhấp đúp rồi Esc.
+3. L đặt nhãn: chân 1 S3_3V3, chân 3 I2C_SDA, chân 4 I2C_SCL; chân 2 nối GND bằng P/W.
+4. A → Conn_01x06_Pin → đặt → E sửa Reference J9, Value IMU_SPI.
+5. Vẽ dây và nhãn cho sáu chân J9 theo bảng mục 6, đặc biệt chân 6 IMU_CS.
+6. Chọn cả khối J9 → Ctrl+D → đặt bản sao → E sửa Reference J10, Value FLOW_SPI.
+7. Rê nhãn chân 6 trên bản sao → E → đổi IMU_CS thành FLOW_CS. Các chân 1–5 giữ theo bảng.
+8. Ctrl+S và chạy ERC.
 
 Ảnh tổng thể dưới đây cho thấy các đầu nối nằm ở phía trên của sơ đồ:
 
