@@ -40,8 +40,27 @@ Global variables use 109796 bytes (33%) of dynamic memory, leaving 217884 bytes 
 - Chưa đọc IMU thật, kiểm tra trục, bus, thời gian lấy mẫu hoặc độ trễ RF.
 - Chưa đo nguồn, dòng motor, lực nâng, nhiệt, khối lượng hay thời lượng bay.
 - Chưa chạy SITL/Gazebo hoặc thử bay.
-- Chưa thiết kế schematic/layout KiCad hoàn chỉnh; chưa ERC/DRC hoặc xuất Gerber.
+- Chưa hoàn thiện nguồn/định tuyến KiCad; chưa ERC hoặc xuất Gerber. DRC bố trí nháp đã chạy, kết quả bên dưới.
 - Chưa triển khai flow/ToF/position control/swarm.
 - Workflow GitHub đã được cấu hình; kết quả local ở trên không thay thế kết quả Actions trên máy chủ.
 
 Nguồn mã/giấy phép và trạng thái phát hành: [COMMERCIALIZATION_NOTES.md](COMMERCIALIZATION_NOTES.md).
+
+## KiCad DRAFT-0 — 03/11/2026
+
+[Project và hướng dẫn](../hardware/kicad/UAV_Mini_RevA_Draft/README.md) đã được tạo bằng KiCad 7.0.11 và thư viện chính thức tương ứng. Đây là kết quả file CAD, chưa phải thử nghiệm phần cứng.
+
+| Kiểm tra | Kết quả |
+|---|---|
+| Native schematic SVG/netlist export | PASS |
+| Đọc lại `.kicad_pcb` bằng pcbnew | PASS, 33 footprint |
+| Net schematic ↔ bảng thiết kế ↔ pad PCB | PASS theo giao diện đề xuất, không xác nhận pinout module thật |
+| Gate/source/drain, cực diode, tách ba net nguồn | PASS theo topology đề xuất |
+| DRC bố trí | 0 vi phạm khác; **67 mục chưa nối dây**, 0 lỗi footprint |
+| ERC / kiểm tra điện trên phần cứng | Chưa chạy |
+| Tracks / zones | 0 / 0 |
+| Review preview | Đã xem SVG xuất từ KiCad và sửa chồng footprint/chữ |
+
+**Không đạt điều kiện xuất sản xuất.** Board 60 × 60 mm, khoảng cách socket, package và connector đều chưa được xác nhận với phần cứng. Mạch chọn nguồn USB/boost chưa triển khai; không có Gerber.
+
+Chạy lại bằng Python có `pcbnew`: `python3 tools/verify_kicad_draft.py --cli kicad-cli`. Xem [validation.json](../hardware/kicad/UAV_Mini_RevA_Draft/validation.json) và [báo cáo DRC](../hardware/kicad/UAV_Mini_RevA_Draft/drc-draft.txt).

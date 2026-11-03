@@ -1,8 +1,10 @@
 # UAV Mini Rev A — đặc tả nguồn và triển khai PCB
 Cập nhật: 03/11/2026
 
-**Trạng thái: đặc tả thiết kế; chưa có schematic/layout KiCad được kiểm chứng; chưa phát hành sản xuất.**
+**Trạng thái: đã có [project KiCad DRAFT-0](../hardware/kicad/UAV_Mini_RevA_Draft/README.md), gồm schematic và PCB bố trí thử; chưa đi dây, chưa kiểm chứng phần cứng, chưa phát hành sản xuất.**
 Không sử dụng tài liệu này như pinout đấu điện của SuperMini chưa xác định revision.
+
+Bản CAD hiện có 33 symbol/footprint, 26 net đặt tên, biên bo 60 × 60 mm giả định. KiCad 7.0.11 đã đọc/xuất file và đối chiếu net; DRC còn 67 mục chưa nối dây, không có vi phạm khác theo cấu hình kiểm tra hiện tại. Chưa chạy ERC. `BOOST_5V` và `S3_5V` còn tách rời vì chưa thiết kế xong chọn nguồn/cách ly USB; cầu hàn JP1 đo pin mặc định mở. Chưa có Gerber để sản xuất. Xem [kết quả máy đọc](../hardware/kicad/UAV_Mini_RevA_Draft/validation.json).
 
 ## 0. Giai đoạn hiện tại — chọn drone nền trước khi mua linh kiện
 

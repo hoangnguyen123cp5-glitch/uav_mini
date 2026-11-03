@@ -2,10 +2,11 @@
 
 **Mục tiêu:** phát triển kit học điều khiển từ Flix, có log, bài thực hành và hướng mở rộng ToF/optical flow. Crazyflie là mốc tham chiếu tính năng; chưa tuyên bố tương đương hoặc tương thích.
 
-**Trạng thái 03/11/2026:** chưa mua phần cứng. Đã thêm bộ tích hợp firmware **chạy bàn, khóa đầu ra motor**, cấu hình ESP32-S3 đề xuất, công cụ phân tích log và ngân sách mục tiêu. Chưa có thử nghiệm bay hoặc PCB hoàn chỉnh để gia công.
+**Trạng thái 03/11/2026:** chưa mua phần cứng. Đã có **project KiCad DRAFT-0** với schematic và PCB bố trí thử (33 linh kiện, chưa đi dây), cùng firmware **chạy bàn, khóa đầu ra motor**, công cụ phân tích log và ngân sách mục tiêu. Chưa có thử nghiệm bay hoặc PCB hoàn chỉnh để gia công.
 
 | Bắt đầu ở đây | Nội dung |
 |---|---|
+| [Mở project KiCad trên máy](hardware/kicad/UAV_Mini_RevA_Draft/README.md) | File schematic/PCB, preview, kết quả kiểm tra và hướng dẫn Windows |
 | [Lộ trình kit học thuật](docs/ACADEMIC_PRODUCT_ROADMAP.md) | Core Lab → Research → nhiều drone, ngân sách và ticket |
 | [Firmware chạy bàn](firmware/README.md) | Cách tải đúng upstream, build, cấu hình và giới hạn |
 | [Kết quả kiểm tra](docs/VALIDATION.md) | Kiểm tra phần mềm đã chạy và phần chưa xác minh |
@@ -32,7 +33,7 @@ UAV Mini là dự án học thiết kế mạch cho drone nhỏ, tham khảo d�
 
 Schematic là sơ đồ các linh kiện nối điện với nhau. PCB là bản bố trí linh kiện và đường đồng để gia công. Tài liệu này hướng dẫn phần schematic; chưa phải hướng dẫn hoàn chỉnh từ đầu đến một drone bay được.
 
-> Dự án đang phát triển. Các giá trị có chữ TBD và phần nguồn S3 chưa được chốt. Bạn có thể dùng tài liệu để học vẽ, nhưng chưa dùng bản hiện tại để đặt PCB hoặc lắp cấp điện. Repository hiện có tài liệu và hình tham khảo, chưa có bộ file KiCad đã kiểm chứng.
+> Dự án đang phát triển. Các giá trị có chữ TBD và phần nguồn S3 chưa được chốt. Bạn có thể dùng tài liệu để học vẽ, nhưng chưa dùng bản hiện tại để đặt PCB hoặc lắp cấp điện. [Project KiCad DRAFT-0](hardware/kicad/UAV_Mini_RevA_Draft/README.md) đã được kiểm tra đọc/xuất và đối chiếu net, còn 67 mục chưa nối dây, chưa ERC hoặc kiểm chứng phần cứng. Bài thực hành bên dưới giữ lại quy trình cũ; bản CAD mới dùng MOSFET **G1/S2/D3**, khác thứ tự GDS trong bài cũ, và thêm cầu hàn ADC mặc định mở.
 
 Các ảnh chụp KiCad ở bài thực hành A–E là ảnh thật ghi lại từng bước vẽ của dự án. Chú thích ngay dưới ảnh chỉ rõ phần nào còn là bước trung gian hoặc thuộc phương án cũ. Bốn hình sơ đồ chức năng ở các mục tham khảo được vẽ riêng để giải thích kết nối.
 

@@ -1,0 +1,23 @@
+{
+  "status": "DRAFT_NOT_FOR_FABRICATION",
+  "kicad_version": "7.0.11",
+  "schematic_native_export": "PASS",
+  "schematic_manifest_and_pcb_named_nets": "PASS",
+  "motor_gate_source_drain_and_diode_polarity": "PASS_TO_PROPOSED_CONTRACT_ONLY",
+  "symbols": 33,
+  "footprints": 33,
+  "pad_count": 96,
+  "named_nets": 26,
+  "tracks": 0,
+  "zones": 0,
+  "drc_findings": {
+    "unconnected_items": 67
+  },
+  "full_drc_pass": false,
+  "erc": "NOT_RUN",
+  "hardware_validation": "NOT_RUN",
+  "sha256": {
+    "UAV_Mini_RevA_Draft.kicad_sch": "510d04b130238bc510a0d227c2028e8a9f0bb829b117f2f8a2a2ffc1520c22d2",
+    "UAV_Mini_RevA_Draft.kicad_pcb": "3e5fb21b4ae2519e7de8a37dacfcffe0f42dfc213bdc4fbdb8535bff16be711a"
+  }
+}

@@ -1,0 +1,533 @@
+{
+  "status": "DRAFT_NOT_FOR_FABRICATION",
+  "kicad": "7.0.11",
+  "board_mm": [
+    60,
+    60
+  ],
+  "tracks": 0,
+  "zones": 0,
+  "source_selection": "NOT_IMPLEMENTED",
+  "components": [
+    {
+      "ref": "J1",
+      "symbol": "Connector_Generic:Conn_01x02",
+      "value": "BAT_1S_TBD",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+      "pins": {
+        "1": "V_bat",
+        "2": "GND"
+      },
+      "x": 118,
+      "y": 153,
+      "rotation": 0,
+      "uuid": "fbea519e-61f9-5196-ae72-14ebdcfbcd3d"
+    },
+    {
+      "ref": "J11",
+      "symbol": "Connector_Generic:Conn_01x04",
+      "value": "BOOST_INTERFACE_TBD",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical",
+      "pins": {
+        "1": "V_bat",
+        "2": "GND",
+        "3": "BOOST_5V",
+        "4": "GND"
+      },
+      "x": 153,
+      "y": 125,
+      "rotation": 0,
+      "uuid": "e4e00df8-40c1-5b70-9874-a720637775c8"
+    },
+    {
+      "ref": "C1",
+      "symbol": "Device:C_Polarized",
+      "value": "BULK_TBD",
+      "footprint": "Capacitor_THT:CP_Radial_D6.3mm_P2.50mm",
+      "pins": {
+        "1": "V_bat",
+        "2": "GND"
+      },
+      "x": 124,
+      "y": 151,
+      "rotation": 0,
+      "uuid": "2ece399d-e2d5-5ff8-8f8e-48d7125aaf7d"
+    },
+    {
+      "ref": "C2",
+      "symbol": "Device:C",
+      "value": "100nF_ASSUMED",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "pins": {
+        "1": "V_bat",
+        "2": "GND"
+      },
+      "x": 134,
+      "y": 151,
+      "rotation": 0,
+      "uuid": "2085573a-3959-5ac8-b301-81639e9d37e8"
+    },
+    {
+      "ref": "J7",
+      "symbol": "Connector_Generic:Conn_01x09",
+      "value": "S3_LEFT_TBD",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x09_P2.54mm_Vertical",
+      "pins": {
+        "1": null,
+        "2": null,
+        "3": "VBAT_SENSE",
+        "4": "FLOW_CS",
+        "5": null,
+        "6": "PWM_M0",
+        "7": "PWM_M1",
+        "8": "PWM_M2",
+        "9": "PWM_M3"
+      },
+      "x": 121.11,
+      "y": 120,
+      "rotation": 0,
+      "uuid": "95642698-df8e-5f09-87d4-2d883cb49b3e"
+    },
+    {
+      "ref": "J8",
+      "symbol": "Connector_Generic:Conn_01x09",
+      "value": "S3_RIGHT_TBD",
+      "footprint": "Connector_PinSocket_2.54mm:PinSocket_1x09_P2.54mm_Vertical",
+      "pins": {
+        "1": "S3_5V",
+        "2": "GND",
+        "3": "S3_3V3",
+        "4": "SPI_MISO",
+        "5": "SPI_SCK",
+        "6": "SPI_MOSI",
+        "7": "IMU_CS",
+        "8": "I2C_SCL",
+        "9": "I2C_SDA"
+      },
+      "x": 138.89,
+      "y": 120,
+      "rotation": 0,
+      "uuid": "dfcd0fda-331a-501b-a396-ab3b1cfcc56b"
+    },
+    {
+      "ref": "J6",
+      "symbol": "Connector_Generic:Conn_01x04",
+      "value": "TOF_I2C_TBD",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x04_P2.54mm_Vertical",
+      "pins": {
+        "1": "S3_3V3",
+        "2": "GND",
+        "3": "I2C_SDA",
+        "4": "I2C_SCL"
+      },
+      "x": 115,
+      "y": 106,
+      "rotation": 90,
+      "uuid": "11d26c54-41e5-5ca8-a246-f0076a7af2d2"
+    },
+    {
+      "ref": "J9",
+      "symbol": "Connector_Generic:Conn_01x06",
+      "value": "IMU_SPI_TBD",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical",
+      "pins": {
+        "1": "S3_3V3",
+        "2": "GND",
+        "3": "SPI_SCK",
+        "4": "SPI_MOSI",
+        "5": "SPI_MISO",
+        "6": "IMU_CS"
+      },
+      "x": 130,
+      "y": 106,
+      "rotation": 90,
+      "uuid": "c0f6812b-e765-5d63-ac57-b98a729def2d"
+    },
+    {
+      "ref": "J10",
+      "symbol": "Connector_Generic:Conn_01x06",
+      "value": "FLOW_SPI_TBD",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x06_P2.54mm_Vertical",
+      "pins": {
+        "1": "S3_3V3",
+        "2": "GND",
+        "3": "SPI_SCK",
+        "4": "SPI_MOSI",
+        "5": "SPI_MISO",
+        "6": "FLOW_CS"
+      },
+      "x": 124,
+      "y": 144,
+      "rotation": 90,
+      "uuid": "a3d098e7-8748-5b5f-aa1e-9fb0cf1d07e6"
+    },
+    {
+      "ref": "J2",
+      "symbol": "Connector_Generic:Conn_01x02",
+      "value": "M0_RL_CCW",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+      "pins": {
+        "1": "V_bat",
+        "2": "M0_NEG"
+      },
+      "x": 105,
+      "y": 145,
+      "rotation": 0,
+      "uuid": "8e9640b6-c71a-5a43-902e-f98309c28bb1"
+    },
+    {
+      "ref": "D1",
+      "symbol": "Device:D_Schottky",
+      "value": "SCHOTTKY_TBD",
+      "footprint": "Diode_SMD:D_SOD-123",
+      "pins": {
+        "1": "V_bat",
+        "2": "M0_NEG"
+      },
+      "x": 108,
+      "y": 139,
+      "rotation": 0,
+      "uuid": "a779bfe5-0a89-5761-95dc-ff9650ebd727"
+    },
+    {
+      "ref": "Q1",
+      "symbol": "Device:Q_NMOS_GSD",
+      "value": "NMOS_TBD_G1_S2_D3",
+      "footprint": "Package_TO_SOT_SMD:SOT-23",
+      "pins": {
+        "1": "GATE_M0",
+        "2": "GND",
+        "3": "M0_NEG"
+      },
+      "x": 111,
+      "y": 144,
+      "rotation": 0,
+      "uuid": "3532096d-696e-57e1-9463-d1451e7ea159"
+    },
+    {
+      "ref": "R1",
+      "symbol": "Device:R",
+      "value": "100R_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "PWM_M0",
+        "2": "GATE_M0"
+      },
+      "x": 116,
+      "y": 140,
+      "rotation": 0,
+      "uuid": "a865faff-4ed6-56b3-811a-e0ca2c664f1a"
+    },
+    {
+      "ref": "R2",
+      "symbol": "Device:R",
+      "value": "10k_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "GATE_M0",
+        "2": "GND"
+      },
+      "x": 116,
+      "y": 145,
+      "rotation": 0,
+      "uuid": "b8bd94d6-e60a-5097-b692-dda605e9bffe"
+    },
+    {
+      "ref": "J3",
+      "symbol": "Connector_Generic:Conn_01x02",
+      "value": "M1_RR_CW",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+      "pins": {
+        "1": "V_bat",
+        "2": "M1_NEG"
+      },
+      "x": 155,
+      "y": 145,
+      "rotation": 0,
+      "uuid": "a5af5103-a1e4-5504-ae74-08e275bdd65b"
+    },
+    {
+      "ref": "D2",
+      "symbol": "Device:D_Schottky",
+      "value": "SCHOTTKY_TBD",
+      "footprint": "Diode_SMD:D_SOD-123",
+      "pins": {
+        "1": "V_bat",
+        "2": "M1_NEG"
+      },
+      "x": 152,
+      "y": 139,
+      "rotation": 0,
+      "uuid": "e1bb66d5-4fb9-5d01-9908-9d84d1639b3c"
+    },
+    {
+      "ref": "Q2",
+      "symbol": "Device:Q_NMOS_GSD",
+      "value": "NMOS_TBD_G1_S2_D3",
+      "footprint": "Package_TO_SOT_SMD:SOT-23",
+      "pins": {
+        "1": "GATE_M1",
+        "2": "GND",
+        "3": "M1_NEG"
+      },
+      "x": 149,
+      "y": 144,
+      "rotation": 0,
+      "uuid": "5ea60b49-dc41-57ab-8427-e1d01ff9a061"
+    },
+    {
+      "ref": "R3",
+      "symbol": "Device:R",
+      "value": "100R_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "PWM_M1",
+        "2": "GATE_M1"
+      },
+      "x": 144,
+      "y": 140,
+      "rotation": 0,
+      "uuid": "4c1f2145-a402-5efe-9c47-e68a1745f32f"
+    },
+    {
+      "ref": "R4",
+      "symbol": "Device:R",
+      "value": "10k_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "GATE_M1",
+        "2": "GND"
+      },
+      "x": 144,
+      "y": 145,
+      "rotation": 0,
+      "uuid": "df4d4d79-f3f1-5a32-a225-70454fb5fee6"
+    },
+    {
+      "ref": "J4",
+      "symbol": "Connector_Generic:Conn_01x02",
+      "value": "M2_FR_CCW",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+      "pins": {
+        "1": "V_bat",
+        "2": "M2_NEG"
+      },
+      "x": 155,
+      "y": 115,
+      "rotation": 0,
+      "uuid": "64022e6a-6fbb-560f-8640-4ee028da96c3"
+    },
+    {
+      "ref": "D3",
+      "symbol": "Device:D_Schottky",
+      "value": "SCHOTTKY_TBD",
+      "footprint": "Diode_SMD:D_SOD-123",
+      "pins": {
+        "1": "V_bat",
+        "2": "M2_NEG"
+      },
+      "x": 152,
+      "y": 111,
+      "rotation": 0,
+      "uuid": "a7ac865c-16c5-505b-9a2a-d582e24ed944"
+    },
+    {
+      "ref": "Q3",
+      "symbol": "Device:Q_NMOS_GSD",
+      "value": "NMOS_TBD_G1_S2_D3",
+      "footprint": "Package_TO_SOT_SMD:SOT-23",
+      "pins": {
+        "1": "GATE_M2",
+        "2": "GND",
+        "3": "M2_NEG"
+      },
+      "x": 149,
+      "y": 116,
+      "rotation": 0,
+      "uuid": "f59ba63e-18f8-5e1a-8560-54bf017c962e"
+    },
+    {
+      "ref": "R5",
+      "symbol": "Device:R",
+      "value": "100R_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "PWM_M2",
+        "2": "GATE_M2"
+      },
+      "x": 144,
+      "y": 112,
+      "rotation": 0,
+      "uuid": "16abc0a7-be71-56b4-9977-06db354780b2"
+    },
+    {
+      "ref": "R6",
+      "symbol": "Device:R",
+      "value": "10k_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "GATE_M2",
+        "2": "GND"
+      },
+      "x": 144,
+      "y": 117,
+      "rotation": 0,
+      "uuid": "02d9b760-b0af-5523-bfba-4974238894fa"
+    },
+    {
+      "ref": "J5",
+      "symbol": "Connector_Generic:Conn_01x02",
+      "value": "M3_FL_CW",
+      "footprint": "Connector_PinHeader_2.54mm:PinHeader_1x02_P2.54mm_Vertical",
+      "pins": {
+        "1": "V_bat",
+        "2": "M3_NEG"
+      },
+      "x": 105,
+      "y": 115,
+      "rotation": 0,
+      "uuid": "11cc7340-d67c-5daa-aeb1-4989104ed172"
+    },
+    {
+      "ref": "D4",
+      "symbol": "Device:D_Schottky",
+      "value": "SCHOTTKY_TBD",
+      "footprint": "Diode_SMD:D_SOD-123",
+      "pins": {
+        "1": "V_bat",
+        "2": "M3_NEG"
+      },
+      "x": 108,
+      "y": 111,
+      "rotation": 0,
+      "uuid": "35b56e87-675d-5fea-8b70-236884e9d3e9"
+    },
+    {
+      "ref": "Q4",
+      "symbol": "Device:Q_NMOS_GSD",
+      "value": "NMOS_TBD_G1_S2_D3",
+      "footprint": "Package_TO_SOT_SMD:SOT-23",
+      "pins": {
+        "1": "GATE_M3",
+        "2": "GND",
+        "3": "M3_NEG"
+      },
+      "x": 111,
+      "y": 116,
+      "rotation": 0,
+      "uuid": "5da541ae-41ed-52fa-9fdf-18e7638804af"
+    },
+    {
+      "ref": "R7",
+      "symbol": "Device:R",
+      "value": "100R_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "PWM_M3",
+        "2": "GATE_M3"
+      },
+      "x": 116,
+      "y": 112,
+      "rotation": 0,
+      "uuid": "e305e881-cfe6-55bc-9396-073d5364b97d"
+    },
+    {
+      "ref": "R8",
+      "symbol": "Device:R",
+      "value": "10k_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "GATE_M3",
+        "2": "GND"
+      },
+      "x": 116,
+      "y": 117,
+      "rotation": 0,
+      "uuid": "ef001631-82b9-5d3d-a2b6-f4fa8b64f701"
+    },
+    {
+      "ref": "R9",
+      "symbol": "Device:R",
+      "value": "10k_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "V_bat",
+        "2": "VBAT_DIV"
+      },
+      "x": 126,
+      "y": 136,
+      "rotation": 0,
+      "uuid": "b0807cfb-501c-5992-beaf-bd1c1889cf2a"
+    },
+    {
+      "ref": "R10",
+      "symbol": "Device:R",
+      "value": "10k_ASSUMED",
+      "footprint": "Resistor_SMD:R_0603_1608Metric",
+      "pins": {
+        "1": "VBAT_DIV",
+        "2": "GND"
+      },
+      "x": 130,
+      "y": 136,
+      "rotation": 0,
+      "uuid": "1aa33302-7a98-560a-9c5d-0dbc6b8cea91"
+    },
+    {
+      "ref": "C3",
+      "symbol": "Device:C",
+      "value": "100nF_ASSUMED",
+      "footprint": "Capacitor_SMD:C_0603_1608Metric",
+      "pins": {
+        "1": "VBAT_DIV",
+        "2": "GND"
+      },
+      "x": 134,
+      "y": 136,
+      "rotation": 0,
+      "uuid": "1cd428fa-9e59-53b3-9862-bf1d9812def9"
+    },
+    {
+      "ref": "JP1",
+      "symbol": "Jumper:SolderJumper_2_Open",
+      "value": "ADC_LINK_OPEN",
+      "footprint": "Jumper:SolderJumper-2_P1.3mm_Open_Pad1.0x1.5mm",
+      "pins": {
+        "1": "VBAT_DIV",
+        "2": "VBAT_SENSE"
+      },
+      "x": 130,
+      "y": 140,
+      "rotation": 0,
+      "uuid": "ba0cecc1-8144-5c4d-b547-def268c94323"
+    }
+  ],
+  "nets": [
+    "BOOST_5V",
+    "FLOW_CS",
+    "GATE_M0",
+    "GATE_M1",
+    "GATE_M2",
+    "GATE_M3",
+    "GND",
+    "I2C_SCL",
+    "I2C_SDA",
+    "IMU_CS",
+    "M0_NEG",
+    "M1_NEG",
+    "M2_NEG",
+    "M3_NEG",
+    "PWM_M0",
+    "PWM_M1",
+    "PWM_M2",
+    "PWM_M3",
+    "S3_3V3",
+    "S3_5V",
+    "SPI_MISO",
+    "SPI_MOSI",
+    "SPI_SCK",
+    "VBAT_DIV",
+    "VBAT_SENSE",
+    "V_bat"
+  ]
+}

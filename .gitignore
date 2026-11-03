@@ -4,4 +4,10 @@ __pycache__/
 *.pyc
 logs/
 .venv/
+*.kicad_prl
+*.kicad_pro-bak
+*.kicad_sch-bak
+*.kicad_pcb-bak
+*-backups/
+~*.lck
 
