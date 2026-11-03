@@ -1,7 +1,7 @@
 # UAV Mini — học vẽ mạch điều khiển drone bằng KiCad
 
 **ESP32-S3 SuperMini + 4 motor chổi than + IMU + ToF + optical flow**  
-Cập nhật: 31/10/2026 • Project hiện tại: `Flix_power`
+Cập nhật: 03/11/2026 • Project hiện tại: `Flix_power`
 
 UAV Mini là dự án học thiết kế mạch cho drone nhỏ, tham khảo dự án mã nguồn mở [Flix](https://github.com/okalachev/flix). Mục tiêu là làm một PCB mang bốn kênh điều khiển động cơ và các cổng cảm biến, với bo ESP32-S3 SuperMini cắm lên trên.
 
@@ -429,32 +429,27 @@ Dự kiến optical flow PMW3901 dạng module SPI; IMU dạng module mà Flix h
 
 Phương án hiện tại không dành chân INT riêng cho IMU/flow; cần xác nhận driver hỗ trợ polling. Phần mềm quản lý mode/tốc độ SPI theo thiết bị và lịch đọc để optical flow không làm trễ vòng IMU. Cần đo tải tổng trước khi dùng nguồn 3V3 của bo S3 cấp tất cả module.
 
-## 7. Phần nguồn — còn phải hoàn thiện
+## 7. Phần nguồn — đặc tả Rev A
 
-Phương án dự kiến, **chưa phải sơ đồ để nối ngay**:
+Đã bổ sung [đặc tả nguồn, ngân sách dòng, ma trận thử và kế hoạch triển khai PCB](docs/REV_A_POWER_AND_PCB.md). Đây là tài liệu thiết kế, chưa phải schematic hoặc PCB đã kiểm chứng.
 
-```text
-LiPo 1S / V_bat ──┬── Motor 0…3
-                  └── Module boost 5 V [CHƯA CHỐT]
-                              │
-                      Cách ly/chọn nguồn USB [CẦN KIỂM TRA]
-                              │
-                      S3_5V / J8.1
-                              │ mạch ổn áp có sẵn trên bo S3
-                      S3_3V3 / J8.3 → cảm biến
-```
+**Phương án thử ưu tiên:** LiPo 1S cấp trực tiếp bốn motor; nhánh logic dùng boost 5 V, qua khối chọn nguồn/chặn ngược, tới S3_5V; ổn áp trên SuperMini tạo 3,3 V. Việc dùng rail này cho cảm biến phụ thuộc khả năng dòng và nhiệt thực tế.
 
-Dự án đang ưu tiên phương án module nguồn để thuận tiện lắp thử. Không chọn footprint nguồn khi chưa xác định đúng module.
+**Điểm chặn bắt buộc:** xác minh VBUS USB có nối cứng với S3_5V hay không. Mux trên PCB mẹ không giải quyết được đường nối đi vòng trên bo SuperMini. Cần cách ly đúng vị trí hoặc chọn nguồn bằng phần cứng đã kiểm chứng. USB chỉ cấp logic/debug, không cấp motor và không sạc pin qua boost.
 
-### Thông tin phải chốt
+| Kiến trúc | Đánh giá |
+|---|---|
+| 1S → boost 5 V → ổn áp SuperMini | Thuận tiện thử; phải kiểm tra tổn hao LDO và USB |
+| 1S → buck-boost 3,3 V | Hướng tối ưu; phải xử lý ổn áp có sẵn và USB trước khi cấp vào 3V3 |
+| 1S → LDO/buck 3,3 V | Mất điều áp khi pin thấp; không ưu tiên toàn dải xả |
+| 1S → boost 3,3 V | Không bảo đảm hạ pin đầy xuống 3,3 V |
+| 1S → trực tiếp 3V3 | Không được phép |
 
-- Module boost hoạt động được trên dải điện áp pin sử dụng, đủ dòng liên tục và xung cho S3 cùng cảm biến; không lấy dòng công tắc quảng cáo làm dòng đầu ra.
-- Pinout IN+/IN−/OUT+/OUT−, kích thước, chân enable nếu có, tụ yêu cầu và cách lắp.
-- Schematic đúng revision bo S3: đầu vào 5 V, ổn áp 3,3 V, phần USB, cổng pin/sạc nếu có.
-- Cách cấp ngoài khi cắm USB để không cấp ngược nguồn; nếu bo không có cách ly, thiết kế thêm hoặc quy định tách nguồn bằng phần cứng phù hợp.
-- Công suất ổn áp 3V3 trên S3 có đủ cho cảm biến hay cần nguồn riêng.
+Espressif khuyến nghị nguồn 3,3 V có năng lực ít nhất 500 mA cho S3; đây không phải dòng tiêu thụ cố định. Cần cộng tải cảm biến, tải phụ, xung RF và dự phòng. Ví dụ giả định 600 mA liên tục qua LDO 5 V → 3,3 V gây khoảng 1,02 W tổn hao: chưa thể khẳng định ổn áp trên SuperMini chịu được.
 
-Chưa có mã bo/module và sơ đồ nguồn xác thực nên chưa điền chân nguồn hoàn chỉnh. Không nối LiPo 4,2 V trực tiếp vào 3V3, và không nối S3_5V với S3_3V3.
+TPS61023 (boost), TPS63070/TPS63031 (buck-boost), TPS2116 (mux) chỉ là ứng viên khảo sát, chưa duyệt BOM. Không nhầm giới hạn dòng công tắc với dòng đầu ra.
+
+Trước khi chốt schematic cần mã/revision SuperMini, motor và cánh, pin, module cảm biến, module nguồn và kích thước PCB. Các mã MOSFET/Schottky/tụ bulk vẫn TBD. Không nối LiPo 4,2 V trực tiếp vào 3V3, không nối S3_5V với S3_3V3.
 
 ## 8. Khắc phục và chạy lại ERC
 
