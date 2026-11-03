@@ -4,6 +4,30 @@ Cập nhật: 03/11/2026
 **Trạng thái: đặc tả thiết kế; chưa có schematic/layout KiCad được kiểm chứng; chưa phát hành sản xuất.**
 Không sử dụng tài liệu này như pinout đấu điện của SuperMini chưa xác định revision.
 
+## 0. Giai đoạn hiện tại — chọn drone nền trước khi mua linh kiện
+
+Ngày 03/11/2026, chủ dự án xác nhận chưa có phần cứng và muốn phát triển dựa trên một mẫu drone. Cấu hình S3 SuperMini + motor chổi than + LiPo 1S bên dưới là phương án tham khảo, chưa phải danh sách linh kiện đã sở hữu hoặc đã đặt mua.
+
+### Hai cách bắt đầu
+| Cách | Có thể kế thừa | Việc phải xác nhận |
+|---|---|---|
+| Theo một dự án mã nguồn mở | Firmware, sơ đồ tham khảo, khung và kinh nghiệm lắp | Đúng phiên bản linh kiện, giấy phép, khả năng tái lập và giới hạn tải |
+| Mua drone làm nền | Khung, motor, cánh và có thể cả pin sau kiểm tra | Model, brushed/brushless, điện áp, tải, kích thước và khả năng thay bo |
+
+Drone thương mại bay được không có nghĩa bo gốc cho phép nạp firmware tự viết. Nếu không có tài liệu/API/mã nguồn phù hợp, phương án dự kiến là dùng phần cơ khí–động lực và thay bộ điều khiển. Nếu mẫu chọn dùng brushless, phải đổi kiến trúc công suất sang ESC; bốn MOSFET low-side hiện tại không dùng để điều khiển trực tiếp motor brushless.
+
+### Mẫu tham khảo đề xuất: Flix
+[Flix của okalachev](https://github.com/okalachev/flix) có firmware, hướng dẫn lắp và file khung 3D. README được đọc ngày 03/11/2026 nêu hỗ trợ ESP32-S3, motor chổi than 8520 3,7 V, cánh 55/65 mm và LiPo 1S. Đây là căn cứ để khảo sát, chưa phải cấu hình đã chốt của UAV Mini. README Flix vẫn ghi PCB chính thức Flix2 đang phát triển; không coi đây là bộ PCB sản xuất đã sẵn sàng.
+
+Đề xuất trình tự:
+1. Xác định mẫu drone hoặc kit tham khảo và kiểm tra tài liệu.
+2. Chốt tổ hợp khung–motor–cánh–pin và ngân sách khối lượng/lực nâng.
+3. Chọn MCU/IMU, dựng bản thử nguồn và điều khiển tư thế.
+4. Tích hợp PCB từ cấu hình đã xác minh.
+5. Bổ sung ToF/optical flow để phát triển giữ độ cao/vị trí; có thể dự phòng cổng từ Rev A.
+
+Link eBay do chủ dự án đề xuất: https://www.ebay.com/itm/920060294715 . Chưa truy xuất được nội dung để xác nhận model hoặc thông số; chưa đưa sản phẩm này vào BOM. Cần tên sản phẩm hoặc ảnh trang bán để đánh giá tiếp.
+
 ## 1. Phạm vi Rev A
 PCB mẹ mang ESP32-S3 SuperMini, bốn kênh MOSFET low-side cho motor chổi than, đo pin và các cổng IMU/ToF/optical flow. Ưu tiên module boost 5 V để thử trước khi tích hợp IC nguồn. Chưa tích hợp sạc pin; dùng bộ sạc ngoài đúng loại pin. Số lớp, kích thước, độ dày và trọng lượng là yêu cầu chưa chốt.
 
@@ -91,6 +115,7 @@ BOM mỗi dòng phải có: reference, giá trị, MPN, hãng, package, footprin
 ## 7. Kế hoạch thực hiện và điều kiện hoàn thành
 | Bước | Đầu ra | Điều kiện qua |
 |---|---|---|
+| 0 — Chọn nền tảng | Model/dự án tham khảo và cấu hình đề xuất | Xác nhận loại motor, pin, khung, firmware và cách kế thừa |
 | A — Chốt yêu cầu | Bảng linh kiện/cơ khí và ngân sách dòng | Không còn dữ liệu mơ hồ ảnh hưởng pinout/nguồn |
 | B — Thử nguồn trên bàn | Log điện áp/dòng/nhiệt/USB | Đủ dòng, không cấp ngược ngoài giới hạn, không brownout |
 | C — Schematic | Project KiCad, PDF schematic, BOM | Mọi TBD quan trọng đã chốt, pinout khớp, ERC được review |
