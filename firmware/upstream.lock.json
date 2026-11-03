@@ -1,0 +1,12 @@
+{
+  "repository": "https://github.com/okalachev/flix.git",
+  "commit": "1f5b268271536e45a9377d1c5317d3eb6f3c3bba",
+  "arduino_cli_tested": "1.5.1",
+  "arduino_core": "esp32:esp32@3.3.10",
+  "libraries": ["FlixPeriph@1.12.1", "MAVLink@2.0.33"],
+  "fqbn": "esp32:esp32:esp32s3:USBMode=hwcdc,CDCOnBoot=cdc,PSRAM=disabled",
+  "profile": "s3_bench_only",
+  "hardware_verified": false,
+  "flight_validated": false,
+  "license_status": "No LICENSE/COPYING file found in this Flix snapshot. Commercial distribution terms unresolved."
+}

@@ -1,4 +1,27 @@
-# UAV Mini — học vẽ mạch điều khiển drone bằng KiCad
+# UAV Mini — nền tảng drone học thuật chi phí thấp
+
+**Mục tiêu:** phát triển kit học điều khiển từ Flix, có log, bài thực hành và hướng mở rộng ToF/optical flow. Crazyflie là mốc tham chiếu tính năng; chưa tuyên bố tương đương hoặc tương thích.
+
+**Trạng thái 03/11/2026:** chưa mua phần cứng. Đã thêm bộ tích hợp firmware **chạy bàn, khóa đầu ra motor**, cấu hình ESP32-S3 đề xuất, công cụ phân tích log và ngân sách mục tiêu. Chưa có thử nghiệm bay hoặc PCB hoàn chỉnh để gia công.
+
+| Bắt đầu ở đây | Nội dung |
+|---|---|
+| [Lộ trình kit học thuật](docs/ACADEMIC_PRODUCT_ROADMAP.md) | Core Lab → Research → nhiều drone, ngân sách và ticket |
+| [Firmware chạy bàn](firmware/README.md) | Cách tải đúng upstream, build, cấu hình và giới hạn |
+| [Kết quả kiểm tra](docs/VALIDATION.md) | Kiểm tra phần mềm đã chạy và phần chưa xác minh |
+| [Nguồn và PCB Rev A](docs/REV_A_POWER_AND_PCB.md) | Nguồn, USB, linh kiện và kế hoạch KiCad |
+| [Nguồn gốc và thương mại hóa](docs/COMMERCIALIZATION_NOTES.md) | Tình trạng giấy phép, phân phối và thương hiệu |
+
+Chạy ngay trên máy tính tại thư mục repo (cần Python 3):
+
+```bash
+python3 tools/budget.py
+python3 tools/analyze_log.py examples/synthetic_log.csv
+```
+
+Ví dụ CSV là dữ liệu tổng hợp, không phải kết quả bay. Phần dưới giữ lại bài học KiCad và cấu hình tham khảo trước khi chốt phần cứng.
+
+## Học vẽ mạch điều khiển bằng KiCad
 
 **ESP32-S3 SuperMini + 4 motor chổi than + IMU + ToF + optical flow**  
 Cập nhật: 03/11/2026 • Project hiện tại: `Flix_power`

@@ -6,6 +6,8 @@ Không sử dụng tài liệu này như pinout đấu điện của SuperMini c
 
 ## 0. Giai đoạn hiện tại — chọn drone nền trước khi mua linh kiện
 
+**Cập nhật định hướng:** chủ dự án đồng ý phát triển theo Flix, ưu tiên giá thấp và khả năng làm kit học thuật. Xem [lộ trình sản phẩm](ACADEMIC_PRODUCT_ROADMAP.md) và [firmware bench](../firmware/README.md). Chưa chọn mua model drone eBay; không lấy sản phẩm chưa xác định làm ràng buộc thiết kế. Chưa có PCB hoặc tính năng giữ vị trí được nghiệm thu.
+
 Ngày 03/11/2026, chủ dự án xác nhận chưa có phần cứng và muốn phát triển dựa trên một mẫu drone. Cấu hình S3 SuperMini + motor chổi than + LiPo 1S bên dưới là phương án tham khảo, chưa phải danh sách linh kiện đã sở hữu hoặc đã đặt mua.
 
 ### Hai cách bắt đầu

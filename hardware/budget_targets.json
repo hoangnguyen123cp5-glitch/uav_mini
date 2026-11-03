@@ -1,0 +1,21 @@
+{
+  "currency": "VND",
+  "basis": "Design spending allocations only. NOT seller quotes, market prices or purchase approval.",
+  "contingency_fraction": 0.20,
+  "items": [
+    {"item": "ESP32-S3 board", "tier": "core", "quantity": 1, "unit_target": 120000},
+    {"item": "Verified MPU6500/9250 SPI breakout", "tier": "core", "quantity": 1, "unit_target": 120000},
+    {"item": "8520 3.7V motor (2 CW + 2 CCW)", "tier": "core", "quantity": 4, "unit_target": 45000},
+    {"item": "Matched propeller set", "tier": "core", "quantity": 1, "unit_target": 35000},
+    {"item": "1S battery; capacity pending thrust/mass tests", "tier": "core", "quantity": 1, "unit_target": 150000},
+    {"item": "5V boost module", "tier": "core", "quantity": 1, "unit_target": 60000},
+    {"item": "Motor switches, diodes and passives", "tier": "core", "quantity": 1, "unit_target": 90000},
+    {"item": "Prototype carrier allowance", "tier": "core", "quantity": 1, "unit_target": 80000},
+    {"item": "Frame/guards printing allowance", "tier": "core", "quantity": 1, "unit_target": 80000},
+    {"item": "Wiring/connectors", "tier": "core", "quantity": 1, "unit_target": 40000},
+    {"item": "Compatible external 1S charger", "tier": "core", "quantity": 1, "unit_target": 60000},
+    {"item": "PMW3901 breakout", "tier": "research", "quantity": 1, "unit_target": 500000},
+    {"item": "VL53L1X breakout", "tier": "research", "quantity": 1, "unit_target": 150000}
+  ],
+  "excluded": ["lab instruments", "computer/controller", "shipping/tax", "engineering labor", "failed prototypes", "warranty/support", "external localization infrastructure"]
+}

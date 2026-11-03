@@ -1,0 +1,28 @@
+name: Bench integration checks
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Host tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Prepare pinned upstream
+        run: python3 tools/prepare_firmware.py
+      - name: Install Arduino CLI 1.5.1
+        run: |
+          curl --fail --location --retry 3 https://github.com/arduino/arduino-cli/releases/download/v1.5.1/arduino-cli_1.5.1_Linux_64bit.tar.gz -o /tmp/arduino-cli.tar.gz
+          echo '28a8e119c498a25607821c36cb2dc49e8463941b261a0d99091baa7bc692dd2b  /tmp/arduino-cli.tar.gz' | sha256sum --check
+          mkdir -p build/tools
+          tar -xzf /tmp/arduino-cli.tar.gz -C build/tools arduino-cli
+      - name: Compile bench firmware
+        run: python3 tools/build_firmware.py --cli build/tools/arduino-cli --install --output build/ci-bench
+      # No binary publication while upstream distribution terms remain unresolved.
